@@ -5,7 +5,7 @@
 **Version**: 1.0.0
 
 # Pull Request
-- 
+- https://github.com/Rtipper/auth-api/pull/2
 
 # Heroku Deployment
 - 
