@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bycrypt = require('bcrypt'); // HASHES THE PLAIN TEXT PASSWORD
+const bcrypt = require('bcrypt'); // HASHES THE PLAIN TEXT PASSWORD
 const jwt = require('jsonwebtoken'); // USE FOR CREATION OF A JEW AND VERIFICATION (SIGN/VERIFY)
 
 const users = new mongoose.Schema({
