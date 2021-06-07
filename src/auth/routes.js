@@ -1,35 +1,45 @@
 'use strict';
 
 const express = require('express');
+const authRouter = express.Router();
 
 const User = require('./models/users.js');
-const basicAuth = require('./middleware/basic.js');
-const bearerAuth = require('./middleware/bearer.js');
-const permissions = require('./middleware/acl.js');
 
-const auth = express.Router();
+const basicAuth = require('./middleware/basic.js')
+const bearerAuth = require('./middleware/bearer.js')
 
-// USER IS ATTACHED TO REQ.BODY -- THINK OF AS A FRONT END FORM
-auth.post('/signup', async (req, res) => {
-  let user = new User(req.body);
-  const record = user.save();
-  res.status(201).json(record) // SENDING BACK TO SEE/TEST
-});
+const permissions = require('./middleware/acl.js')
 
-auth.post('/signin', basicAuth, (req, res) => {
-  let userDetails = {
-    details: req.user,
-    token: req.user.token
+authRouter.post('/signup', async (req, res, next) => {
+  try {
+    let user = new User(req.body);
+    const userRecord = await user.save();
+    const output = {
+      user: userRecord,
+      token: userRecord.token
+    };
+    res.status(201).json(output);
+  } catch (e) {
+    next(e.message)
   }
-  res.status(200).json(userDetails);
-})
-
-auth.post('/must-be-signed-in', bearerAuth, (req, res) => {
-  res.status(200).send('you were able to sign in');
 });
 
-auth.get('/protected-route', bearerAuth, permissions('read'),(req, res) => {
-  res.status(200).send('you are signed in and have proper permissions');
+authRouter.post('/signin', basicAuth, (req, res, next) => {
+  const user = {
+    user: req.user,
+    token: req.user.token
+  };
+  res.status(200).json(user);
 });
 
-module.exports = auth;
+authRouter.get('/users', bearerAuth, permissions('delete'), async (req, res, next) => {
+  const users = await User.find({});
+  const list = users.map(user => user.username);
+  res.status(200).json(list);
+});
+
+authRouter.get('/secret', bearerAuth, async (req, res, next) => {
+  res.status(200).send('Welcome to the secret area')
+});
+
+module.exports = authRouter;
