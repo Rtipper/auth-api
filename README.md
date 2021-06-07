@@ -5,10 +5,10 @@
 **Version**: 1.0.0
 
 # Pull Request
-- https://github.com/Rtipper/auth-api/pull/2
+- https://github.com/Rtipper/auth-api/pull/4
 
 # Heroku Deployment
-- 
+- https://rtipper-auth-api.herokuapp.com/
 
 ## Overview - Deploy an Express server that implements Basic Authentication, with signup and signin capabilities, using a Mongo database for storage.
 
@@ -33,6 +33,7 @@ Heroku
 
 ## Change Log
 03-17-21 710PM: Able to finally get tests working and troublshooted to pass.
+06-07-21 1130AM: Spent open time going back and finally getting lab complete, with tests and heroku
 
 ## Credits and Collaborations
 
